@@ -1,0 +1,79 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<div id="app">
+  <p v-once>{{ message }}</p>
+  <p>{{ saudacao() }}</p>
+  <a :href="link">Google</a>
+  <p>{{ contador }}</p>
+  <!-- Interpolação --> 
+  <p> {{ contador > 10 ? 'Contador maior que 10' : 'Contador menor que 10'  }}</p>
+  <!-- Eventos -->
+  <button v-on:click="somar">Somar 1</button>
+  <p v-on:mousemove="atualizar">
+    Mouse: {{ x }} e {{ y }}
+    <span v-on:mousemove.stop>PARAR AQUI!</span>
+  </p>
+  <hr>
+  <button v-on:click="alerta">Clique</button>
+  <br> <br>
+  <input type="text" v-on:keydown="valor = $event.target.value">
+  <p>{{ texto }}</p>
+  <input type="text" v-on:keydown.enter="valor = $event.target.value">
+  <p>{{ texto }}</p>
+  <hr>
+  <!-- Two-Way-Binding --> <!-- O v-model substitui o v-bind:value e o v-on:input-->
+  <p>{{ titulo }}</p>
+  <input type="text" v-model="titulo">
+  <hr>
+  <p>Valor atual: {{ valor }}</p>
+  <button @click="valor += 5"> Somar 5</button>
+  <button @click="valor += 1"> Somar 1</button>
+  <p> {{ resultado }}</p>
+</div>
+
+<script> 
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        message: 'Hello World!',
+        link: 'https://google.com.br',
+        contador: 0,
+        x: 0,
+        y: 0,
+        texto: '',
+        titulo: 'Vuejs',
+        valor: 0
+      }
+    },
+    computed: {
+      resultado() {
+        return this.valor === 37 ? 'Valor igual' : 'Valor diferente'
+      }
+    },
+    watch: {
+      resultado() {
+        setTimeout(() => {
+          this.valor = 0
+        }, 5000)
+      }
+    },
+    methods: {
+        saudacao() {
+            this.message = 'Bom dia'
+            return this.message
+        },
+        somar() {
+          this.contador++
+        },
+        atualizar(event) {
+          this.x = event.clientX
+          this.y = event.clientY
+        },
+        alerta() {
+          alert('Alerta')
+        }
+    }
+  }).mount('#app')
+</script>

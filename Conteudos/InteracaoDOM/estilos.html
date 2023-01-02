@@ -1,0 +1,79 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<div id="app">
+    <div id="desafio">
+        <h2> Desafio 1</h2>
+        <div>
+            <button @click="iniciarEfeito">Iniciar Efeito</button> <br> <br>
+            <div id="efeito" :class="classe1"></div>
+        </div>
+        <h2> Desafio 2</h2>
+        <div :class="[{perigo}, 'quadrado']"></div>
+        <h2> Desafio 3</h2>
+        <div>
+            <input type="text" v-model="classe3">
+            <div :class="classe3"></div>
+        </div>
+        <h2> Desafio 4</h2>
+        <div>
+            <input type="text" v-model="classe4">
+            <input type="text" @input="setPerigo">
+            <div :class="[classe4, {perigo}]"></div>
+        </div>
+        <h2> Desafio 5</h2>
+        <div>
+            <input type="text" v-model="cor5">
+            <div :style="[estilo5, {backgroundColor : cor5}]"></div>
+        </div>
+        <h2> Desafio 6</h2>
+        <div>
+            <button @click="iniciarProgressao">Iniciar</button> <br> <br>
+            <div class="barra-progresso">
+                <div class="progresso" :style="{width : estilo5.width}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script> 
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+        return {
+            classe1: 'destaque',
+            perigo: true,
+            classe3: '',
+            classe4: '',
+            cor5: '',
+            estilo5: {
+                width: '0px',
+                height: '100px'
+            }
+        }
+    },
+    methods: {
+        iniciarEfeito() {
+            setInterval(() => {
+                this.classe1 = this.classe1 == 'destaque' ? 'encolher' : 'destaque'
+            }, 1000)
+        },
+        iniciarProgressao() {
+            let valor = 0
+            const temp = setInterval(() => {
+                valor += 5
+                this.estilo5.width = `${valor}%`
+                if(valor === 100)
+                    clearInterval(temp)
+            }, 500)
+        },
+        setPerigo(event) {
+            if(event.target.value == "true") 
+                this.perigo = true
+            else if(event.target.value == "false")
+                this.perigo = false
+        }
+    }   
+  }).mount('#app')
+</script>
